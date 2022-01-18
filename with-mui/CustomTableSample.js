@@ -154,7 +154,7 @@ const TFoot = (props) => {
 }
 
 const DataTable = (props) => {
-  // const { headerCols, dataRows } = props;
+  // const { headerCols, dataRows, tableName } = props;
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [filter, setFilter] = useState('');
@@ -162,6 +162,8 @@ const DataTable = (props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const tableName = "Custom Table Name"
+  
   const headerCols = [
     'ACTUAL FROM DISTILLATION',
     'DESCRIPTION',
@@ -203,7 +205,7 @@ const DataTable = (props) => {
       }}>
         <Typography sx={{ 
           fontWeight: 'bold' 
-        }}>Table Name</Typography>
+        }}>{tableName}</Typography>
       </Box>
       <StyledTable>
         <THead 
