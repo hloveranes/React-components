@@ -72,7 +72,7 @@ const THead = (props) => {
   const [hasHeader, setHasHeader] = useState(true);
 
   useEffect(() => {
-    (headerCols.length > 1) ? setHasHeader(true) : setHasHeader(false);
+    (headerCols.length > 0) ? setHasHeader(true) : setHasHeader(false);
   });
 
   return (
@@ -84,7 +84,7 @@ const THead = (props) => {
         ))
        :
         headerCols.map((colName, indx) => {
-         return (<StyledTh key={indx}>{colName}</StyledTh>)
+         return (<StyledTh key={indx}>{colName.toUpperCase()}</StyledTh>)
         })}
       </tr>
     </thead>
@@ -144,8 +144,21 @@ const TFoot = (props) => {
       <tr>
         {Object.keys(dataRows[dataRows.length - 1]).map((keyName, i) => (
           <StyledTd key={i} sx={{ textAlign: isNumber(totalArr[keyName]), position: "relative" }}>
-            {i == 0 && <Typography display="inline" sx={{ fontWeight: 'bold', position: "absolute", left: 0, marginLeft: "0.5rem" }}>Total</Typography>}
-            {` ${(totalArr[keyName] != undefined) ? totalArr[keyName] : '' }`}
+            {i == 0 && <Typography 
+              sx={{ 
+                fontWeight: 'bold', 
+                position: "absolute", 
+                left: 0, 
+                top: 0,
+                marginLeft: "0.5rem", 
+                marginTop: "0.1rem", 
+              }}>Total</Typography>}
+            {`${(totalArr[keyName] != undefined && isNumeric(totalArr[keyName]))}` && <Typography display="inline" 
+              sx={{ 
+                fontWeight: 'bold', 
+                right: 0, 
+                top: 0, 
+              }}>{totalArr[keyName] ? totalArr[keyName] : ''}</Typography>}
           </StyledTd>
         ))}
       </tr>
@@ -154,50 +167,55 @@ const TFoot = (props) => {
 }
 
 const DataTable = (props) => {
-  // const { headerCols, dataRows, tableName } = props;
+  const { 
+    headerCols, 
+    dataRows, 
+    tableName='', 
+    showTotal=false
+   } = props;
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [filter, setFilter] = useState('');
   const [filterBy, setFilterBy] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const tableName = "Custom Table Name"
+  // const tableName = "Custom Table Name"
   
-  const headerCols = [
-    'ACTUAL FROM DISTILLATION',
-    'DESCRIPTION',
-    'QUANTITY',
-    'HYDROSOL',
-    'PURIFIED OIL'
-  ];
-  const dataRows = [
-  {
-    actual_from_distillation: 29,
-    description: "Extra",
-    quantity: 1,
-    hydrosol: 2,
-    purified_oil: 28
-  },
-  {
-    actual_from_distillation: 13,
-    description: "First Grade",
-    quantity: 3,
-    hydrosol: 1,
-    purified_oil: 12
-  },
-  {
-    actual_from_distillation: 11,
-    description: "Second Grade",
-    quantity: 1,
-    hydrosol: 4,
-    purified_oil: 10
-  }
-  ];
+  // const headerCols = [
+  //   'ACTUAL FROM DISTILLATION',
+  //   'DESCRIPTION',
+  //   'QUANTITY',
+  //   'HYDROSOL',
+  //   'PURIFIED OIL'
+  // ];
+  // const dataRows = [
+  // {
+  //   actual_from_distillation: 29,
+  //   description: "Extra",
+  //   quantity: 1,
+  //   hydrosol: 2,
+  //   purified_oil: 28
+  // },
+  // {
+  //   actual_from_distillation: 13,
+  //   description: "First Grade",
+  //   quantity: 3,
+  //   hydrosol: 1,
+  //   purified_oil: 12
+  // },
+  // {
+  //   actual_from_distillation: 11,
+  //   description: "Second Grade",
+  //   quantity: 1,
+  //   hydrosol: 4,
+  //   purified_oil: 10
+  // }
+  // ];
 
   return (
     <Paper elevation={0}>
-      <Box sx={{ 
+      {tableName && <Box sx={{ 
         width: '100%', 
         textAlign: 'center',
         backgroundColor: '#000',
@@ -206,7 +224,7 @@ const DataTable = (props) => {
         <Typography sx={{ 
           fontWeight: 'bold' 
         }}>{tableName}</Typography>
-      </Box>
+      </Box> }
       <StyledTable>
         <THead 
           headerCols={headerCols}
@@ -221,9 +239,9 @@ const DataTable = (props) => {
           page={page}
           rowsPerPage={rowsPerPage}
         />
-        <TFoot 
+        { showTotal && <TFoot 
           dataRows={dataRows}
-        />
+        />}
       </StyledTable>
     </Paper>
   )
