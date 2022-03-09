@@ -263,6 +263,9 @@ const DataTable = (props) => {
       });
       setNewRow(b);
     }
+    if (dataRows.length === 0) {
+      setNewRow([{}]);
+    }
   }, [hasActions, dataRows]);
 
   useEffect(() => {
