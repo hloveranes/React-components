@@ -263,7 +263,7 @@ const DataTable = (props) => {
       });
       setNewRow(b);
     }
-  }, [hasActions]);
+  }, [hasActions, dataRows]);
 
   useEffect(() => {
     if (newRow.length > 0) {
